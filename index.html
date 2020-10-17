@@ -77,6 +77,96 @@
                 position: relative;
                 top: -1px;
             }
+
+            /* Dark Mode */
+            :root {
+                --primary-color: #302ae6;
+                --secondary-color: #536390;
+                --font-color: #424242;
+                --bg-color: #fff;
+                --heading-color: #292922;
+            }
+
+            [data-theme="dark"] {
+                --primary-color: #9a97f3;
+                --secondary-color: #818cab;
+                --font-color: #e1e1ff;
+                --bg-color: #161625;
+                --heading-color: #818cab;
+            }
+
+            [data-theme="dark"] body {
+                background-color: var(--bg-color);
+            }
+
+            [data-theme="dark"] nav {
+                background-color: #071c4d;
+            }
+
+            [data-theme="dark"] a, label {
+                color:var(--font-color);
+            }
+
+            .theme-switch-wrapper {
+                display: flex;
+                margin-top: -7px;
+            }
+
+            .theme-switch>p {
+                font-size: 12px;
+                margin-top: 33px;
+                width: 60px;
+                margin-left: 0;
+            }
+
+            .theme-switch {
+                display: inline-block;
+                height: 34px;
+                position: relative;
+                width: 60px;
+            }
+            
+            .theme-switch>input {
+                display: none;
+            }
+
+            .slider {
+                background-color: #ccc;
+                bottom: 0;
+                cursor: pointer;
+                left: 0;
+                position: absolute;
+                right: 0;
+                top: 0;
+                transition: 0.4s;
+            }
+
+            .slider:before {
+                background-color: #fff;
+                bottom: 4px;
+                content: "";
+                height: 26px;
+                left: 4px;
+                position: absolute;
+                transition: 0.4s;
+                width: 26px;
+            }
+
+            input:checked + .slider {
+                background-color: #66bb6a;
+            }
+
+            input:checked + .slider:before {
+                transform: translateX(26px);
+            }
+
+            .slider.round {
+                border-radius: 34px;
+            }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
         </style>
     </head>
     <body class="bg-gray-200 font-sans leading-normal tracking-normal">
@@ -241,6 +331,14 @@
                             </div>
                         </div>
                     </li>
+
+                    <div class="theme-switch-wrapper py-6 px-2 lg:p-6">
+                        <label for="checkbox" class="theme-switch">
+                            <input type="checkbox" id="checkbox">
+                                <div class="slider round"></div>
+                                <p>Dark Mode</p>
+                        </label>
+                    </div>
                     <!-- ## Hoverable Link Template ##
                         <li class="hoverable hover:bg-blue-800 hover:text-white"><a href="#" class="relative block">x</a><div class="mega-menu">
                         Add your mega menu content
@@ -250,5 +348,33 @@
                 </ul>
             </div>
         </nav>
+        <script>
+            // Dark Mode
+            window.console = window.console || function (t) {};
+            if (document.location.search.match(/type=embed/gi)) {
+                window.parent.postMessage("resize", "*");
+            }
+            console.log('Dark Mode On');
+            const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+
+            function switchTheme(e) {
+                if (e.target.checked) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                }
+            }
+            toggleSwitch.addEventListener('change', switchTheme, false);
+
+            const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
+            if (currentTheme) {
+                document.documentElement.setAttribute('data-theme', currentTheme);
+
+                if (currentTheme === 'dark') {
+                    toggleSwitch.checked = true;
+                }
+            }
+        </script>
     </body>
 </html>
